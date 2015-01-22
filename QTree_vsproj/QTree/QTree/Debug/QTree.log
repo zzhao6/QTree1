@@ -1,0 +1,21 @@
+﻿Build started 1/22/2015 11:26:55 AM.
+     1>Project "C:\Users\Zhe-Sichen\Documents\GitHub\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\QTreeSrouce\Main.cpp
+         Main.cpp
+     1>c:\users\zhe-sichen\documents\github\qtree\qtreesrouce\main.cpp(14): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\zhe-sichen\documents\github\qtree\qtreesrouce\main.cpp(58): warning C4244: 'initializing' : conversion from 'time_t' to 'long', possible loss of data
+     1>c:\users\zhe-sichen\documents\github\qtree\qtreesrouce\main.cpp(202): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zhe-Sichen\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Zhe-Sichen\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zhe-Sichen\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.lib" /MACHINE:X86 Debug\AnalyticFormulae.obj
+         Debug\Main.obj
+         Debug\myLogger.obj
+         Debug\Node.obj
+         Debug\Path.obj
+         Debug\TimeSlice.obj
+         QTree.vcxproj -> C:\Users\Zhe-Sichen\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.exe
+     1>Done Building Project "C:\Users\Zhe-Sichen\Documents\GitHub\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.57

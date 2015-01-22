@@ -1,0 +1,3 @@
+echo Compiling...
+g++ .\AnalyticFormulae.cpp .\Main.cpp .\myLogger.cpp .\Node.cpp .\Path.cpp .\TimeSlice.cpp -o QTree.exe
+.\QTree.exe
