@@ -10,7 +10,7 @@ class Path
 private:
 
 	Para pathPara;
-	long seedPath;
+	int seedPath;
 
 	double optValuePath;
 	vector<TimeSlice*> TSPtrVec;
