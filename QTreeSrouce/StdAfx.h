@@ -21,7 +21,7 @@ using namespace std;
 
 // ========= input parameters ====================
 #define PROB 1/10.0f
-#define INTEREST 0.03f
+#define INTEREST 0.1f
 #define NCHILDREN 4	// every node has 4 successors
 #define MATURITY 1
 #define STEPS 252
@@ -42,10 +42,10 @@ using namespace std;
 #define MIN 0.3
 
 // parameters of Heston
-#define KAPPA 1
-#define THETA 0.2
-#define VOLOFVOL 0.3
-#define VOL0 0.2
+#define KAPPA 11.35
+#define THETA 0.022
+#define VOLOFVOL 0.618
+#define VOL0 0.04
 
 #define LAMBDA 0
 #define RHO 0

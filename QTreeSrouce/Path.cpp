@@ -101,8 +101,15 @@ void Path::genSigmaHeston()
 	for (int i = 1; i < pathPara.Steps + 1; i++)
 	{
 		double epsilon = gaussrand();
-		paraVec[i].Sigma = paraVec[i - 1].Sigma + pathPara.Kappa* (pathPara.Theta - paraVec[i - 1].Sigma) * pathPara.Maturity / pathPara.Steps +
-						   pathPara.VolOfVol*sqrt(pathPara.Maturity / pathPara.Steps * paraVec[i - 1].Sigma) * epsilon;
+			//paraVec[i].Sigma = paraVec[i - 1].Sigma
+								//+ pathPara.Kappa* (pathPara.Theta - paraVec[i - 1].Sigma) * pathPara.Maturity / pathPara.Steps
+								//+ pathPara.VolOfVol*sqrt(pathPara.Maturity / pathPara.Steps * paraVec[i - 1].Sigma) * epsilon;
+		//Euler-Milstein method:
+		paraVec[i].Sigma = paraVec[i - 1].Sigma
+							+ pathPara.Kappa* (pathPara.Theta - paraVec[i - 1].Sigma) * pathPara.Maturity / pathPara.Steps
+							+ pathPara.VolOfVol*sqrt(pathPara.Maturity / pathPara.Steps * paraVec[i - 1].Sigma) * epsilon
+							+ .25 * pathPara.VolOfVol * pathPara.VolOfVol * pathPara.Maturity / pathPara.Steps * (epsilon*epsilon-1);
+
 	}
 	for (int i = 0; i < pathPara.Steps + 1; i++)
 	{
