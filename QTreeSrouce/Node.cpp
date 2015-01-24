@@ -15,6 +15,8 @@ Node::Node(Para& para)
 	
 	this->q = 0;
 	this->optValueNode = 0;
+	this->optValueNode_variance_std = 0;
+	this->optValueNode_variance_sim = 0;
 	this->myCase = caseNA;
 
 	childNodePtrs.reserve(NCHILDREN);
@@ -114,6 +116,19 @@ void Node::calcPayOff()
 	optValueNode = max(price - nodePara.Strike, 0.0);		// European Call
 	//optValueNode = max(this->nodePara.Strike - price, 0.0);	// European Put
 }
+
+void Node::baCalc_variance_std(){
+	double optResult_variance_std = 0.0;
+	optResult_variance_std += this->probArr[0] * ((this->childNodePtrs[0]->x - this->x )* (this->childNodePtrs[0]->x - this->x )+this->childNodePtrs[0]->optValueNode_variance_std);
+	optResult_variance_std += this->probArr[1] * ((this->childNodePtrs[1]->x - this->x )* (this->childNodePtrs[1]->x - this->x )+this->childNodePtrs[1]->optValueNode_variance_std);
+	optResult_variance_std += this->probArr[2] * ((this->childNodePtrs[2]->x - this->x )* (this->childNodePtrs[2]->x - this->x )+this->childNodePtrs[2]->optValueNode_variance_std);
+	optResult_variance_std += this->probArr[3] * ((this->childNodePtrs[3]->x - this->x )* (this->childNodePtrs[3]->x - this->x )+this->childNodePtrs[3]->optValueNode_variance_std);
+
+	this->optValueNode_variance_std = optResult_variance_std;
+}
+
+
+
 
 
 double Node::getOpt(){

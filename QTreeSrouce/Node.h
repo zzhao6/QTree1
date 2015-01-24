@@ -9,6 +9,8 @@ class Node
 private:
 	double x;				// return value
 	double optValueNode;	// option value
+	double optValueNode_variance_std;
+	double optValueNode_variance_sim;
 	double q;				// q in the paper
 	Para nodePara;
 
@@ -33,8 +35,14 @@ public:
 	void baCalc();		// the optionValueNode must be computed through one parent Node and four children ptrs
 	void calcPayOff();	// if Node belongs to the last TS, use this function
 
+	void baCalc_variance_std();	//standard return variance
+	void baCalc_variance_sim(); //
+
+
 	// get functions
 	double getOpt();
+	double getOpt_variance_std();
+	double getOpt_variance_sim();
 	double getX();
 	Para getPara();
 	vector<Node*> getNodePtrs();
