@@ -111,8 +111,8 @@ void Node::baCalc()
 void Node::calcPayOff()
 {
 	double price = exp(x);
-	optValueNode = max(price - nodePara.Strike, 0.0);		// European Call
-	//optValueNode = max(this->nodePara.Strike - price, 0.0);	// European Put
+	//optValueNode = max(price - nodePara.Strike, 0.0);		// European Call
+	optValueNode = max(this->nodePara.Strike - price, 0.0);	// European Put
 }
 
 

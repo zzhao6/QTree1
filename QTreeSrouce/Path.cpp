@@ -1,8 +1,7 @@
 #include "Path.h"
 
-Path::Path(Para& outPara, long pathSeed, int sigmaType)
+Path::Path(Para& outPara, int sigmaType)
 {
-	this->seedPath = pathSeed;
 	this->pathPara = outPara;
 	this->optValuePath = 0;
 	this->paraVec.resize(pathPara.Steps + 1);
@@ -11,7 +10,6 @@ Path::Path(Para& outPara, long pathSeed, int sigmaType)
 		this->paraVec[i] = this->pathPara;
 	}
 	
-
 	//generate sigma vector
 	switch (sigmaType)
 	{
@@ -176,11 +174,7 @@ double Path::gaussrand()
 	return X;
 }
 
-// vector<float> Path::getSigma()
-// {
-// 	return this->randPool;
-// }
-// 
+
 void Path::displaySigma()
 {
 	ofstream sigmaOut;

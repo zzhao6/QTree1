@@ -10,13 +10,11 @@ class Path
 private:
 
 	Para pathPara;
-	long seedPath;
 
 	double optValuePath;
 	vector<TimeSlice*> TSPtrVec;
 	vector<Para> paraVec;		// parameter vector, mainly including different sigma
 								// and thus different drifts and grids
-
 	void buildTree();
 	void calcOptValue();
 
@@ -24,13 +22,10 @@ private:
 	void genSigmaHeston();
 	void genSigmaConstant();
 
-public:
-
-	double gaussrand();
 
 public:
 	Path(){};
-	Path(Para& outPara, long pathSeed, int sigmaType);
+	Path(Para& outPara, int sigmaType);
 	~Path();
 
 public:
@@ -44,6 +39,9 @@ public:
 	void displayPath();
 	void displayNodeCnt();
 	void displaySigma();
+
+public:
+	double gaussrand();
 };
 
 #endif

@@ -17,6 +17,7 @@
 #include <stdio.h>
 using namespace std;
 
+#define GLOBALSEED 200
 #define NCHILDREN 4
 
 // ========= input parameters ====================

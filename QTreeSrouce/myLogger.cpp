@@ -10,7 +10,8 @@ CLogger::CLogger()
 CLogger* CLogger::getLogger(){
 	if(m_pThis == NULL){
 		m_pThis = new CLogger();
-		m_Logfile.open(m_sFileName.c_str(), ios::out | ios::app );
+		m_Logfile.clear();
+		m_Logfile.open(m_sFileName.c_str(), ios::out | ios::trunc );
 	}
 	return m_pThis;
 }
