@@ -20,7 +20,7 @@ struct Para
 	double Rho;
 
 	// other parameters
-	double Prob;		// input probability in the tree
+	double Prob;	// input probability in the tree
 	double grid;	// grid for the TS containing this Node
 	double drift;	// drift for the TS containing this Node
 };

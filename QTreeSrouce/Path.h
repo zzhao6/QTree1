@@ -42,6 +42,16 @@ public:
 
 public:
 	double gaussrand();
+
+public:
+	// for correlated stock prices and volatilities
+	double gridCorr(double sigma, double deltaT);
+	double driftCorr(double sigma, double deltaT);
+
+	double gridUnCorr(double sigma, double deltaT);
+	double driftUnCorr(double sigma, double deltaT);
+
+	double genDriftsAndGrids(double sigma, double deltaT);
 };
 
 #endif

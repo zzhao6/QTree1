@@ -67,13 +67,13 @@ int main()
 	// Black Shcoles Tests
 
 	// first test, one path
-	//Path onePath(para1, sigmaType);
-	//onePath.buildAndCalc();
-	//double priceQTree = onePath.getOptionValue();
-	//double priceBS = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	Path onePath(para1, sigmaType);
+	onePath.buildAndCalc();
+	double priceQTree = onePath.getOptionValue();
+	double priceBS = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
 
-	//cout << priceBS << endl;
-	//cout << priceQTree << endl;
+	cout << priceBS << endl;
+	cout << priceQTree << endl;
 
 	// second test, different interest rate
 	//double priceQTreeVec[15];
@@ -213,36 +213,36 @@ int main()
 	// 1/12 = 0.083, 1/6 = 0.1667
 	// p = 0.085~0.165
 	
-	const int IDXBOUND = 9;
+	//const int IDXBOUND = 9;
 
-	double Probs[9] = { 0.085, 0.095, 0.105, 0.115, 0.125, 0.135, 0.145, 0.155, 0.165 };
-	int numMC = 100;
-	
-	LOGGER->Log("Prob, QTree, HestonCall, HestonPut\n");
-	for (int iProb = 0; iProb < IDXBOUND; iProb++)
-	{
-		para1.Prob = Probs[iProb];
-		
-		cout << "Iteration:\t" << iProb << endl;
-		cout << "Prob:\t" << para1.Prob << endl;
-		
-		LOGGER->Log("%f", para1.Prob);
-		double priceQTree = MCHeston(para1, numMC);
-		LOGGER->Log(",%f", priceQTree);
+	//double Probs[9] = { 0.085, 0.095, 0.105, 0.115, 0.125, 0.135, 0.145, 0.155, 0.165 };
+	//int numMC = 100;
+	//
+	//LOGGER->Log("Prob, QTree, HestonCall, HestonPut\n");
+	//for (int iProb = 0; iProb < IDXBOUND; iProb++)
+	//{
+	//	para1.Prob = Probs[iProb];
+	//	
+	//	cout << "Iteration:\t" << iProb << endl;
+	//	cout << "Prob:\t" << para1.Prob << endl;
+	//	
+	//	LOGGER->Log("%f", para1.Prob);
+	//	double priceQTree = MCHeston(para1, numMC);
+	//	LOGGER->Log(",%f", priceQTree);
 
-		double priceHestonCall = EuroCall_Heston(para1);
-		LOGGER->Log(",%f", priceHestonCall);
-		
-		double priceHestonPut = EuroPut_Heston(para1);
-		LOGGER->Log(",%f\n", priceHestonPut);
+	//	double priceHestonCall = EuroCall_Heston(para1);
+	//	LOGGER->Log(",%f", priceHestonCall);
+	//	
+	//	double priceHestonPut = EuroPut_Heston(para1);
+	//	LOGGER->Log(",%f\n", priceHestonPut);
 
-		cout << "\nQTree:\t" << priceQTree << endl;
-		cout << "Call:\t" << EuroCall_Heston(para1) << endl;
-		cout << "Put: \t" << EuroPut_Heston(para1) << endl << endl;
+	//	cout << "\nQTree:\t" << priceQTree << endl;
+	//	cout << "Call:\t" << EuroCall_Heston(para1) << endl;
+	//	cout << "Put: \t" << EuroPut_Heston(para1) << endl << endl;
 
-		//cout << "Press to continue..." << endl;
-		//cin.get();
-	}
+	//	//cout << "Press to continue..." << endl;
+	//	//cin.get();
+	//}
 
 	return 0;
 }

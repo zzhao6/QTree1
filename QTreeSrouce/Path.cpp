@@ -32,8 +32,42 @@ Path::Path(Para& outPara, int sigmaType)
 	}
 
 	// calculate gridVec
-	double dt = pathPara.Maturity / pathPara.Steps;
 	
+	// add dt to path
+	double dt = 0.0;
+	try
+	{
+		dt = pathPara.Maturity / pathPara.Steps;
+	}
+	catch (int e)
+	{
+		cout << "Unable to calculate dt" << endl;
+		throw 5;
+	}
+
+	//pathPara.grid = paraVec[0].Sigma * sqrt(dt);
+	//pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
+
+	//for (int i = 1; i < pathPara.Steps + 1; i++)	// totally 
+	//{
+	//	paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
+	//	paraVec[i].drift = (pathPara.Interest - paraVec[i].Sigma * paraVec[i].Sigma / 2) * dt;
+	//}
+
+
+	///////////////////////////////////////////////////////////////
+	// test drift and grid functions
+	if (this->pathPara.Rho == 0)
+	{
+		// generate grids and drifts with no correlation
+	}
+	else
+	{
+		// generate grids and drifts with correlation
+	}
+
+
+
 	pathPara.grid = paraVec[0].Sigma * sqrt(dt);
 	pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
 
@@ -42,8 +76,47 @@ Path::Path(Para& outPara, int sigmaType)
 		paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
 		paraVec[i].drift = (pathPara.Interest - paraVec[i].Sigma * paraVec[i].Sigma / 2) * dt;
 	}
+	///////////////////////////////////////////////////////////////
+
+	// seeds inside paths are discarded
+
 	//srand(pathSeed);
 }
+
+/////////////////////////////////////////
+// correlated SDEs:
+double Path::gridUnCorr(double sigma, double deltaT)
+{
+	// sigma * sqrt(dt)
+	return sigma * sqrt(deltaT);
+}
+
+
+double Path::gridCorr(double sigma, double deltaT)
+{
+	// rho_bar * sigma * sqrt(dt)
+	return sqrt(1 - this->pathPara.Rho * this->pathPara.Rho) * sigma * sqrt(deltaT);
+}
+
+double Path::driftUnCorr(double sigma, double deltaT)
+{
+	return (this->pathPara.Interest - sigma * sigma / 2) * deltaT;
+}
+
+double Path::driftCorr(double sigma, double deltaT)
+{
+	return 
+		(
+		pathPara.Interest -
+		0.5 * sigma * sigma * (1 - pathPara.VolOfVol * pathPara.VolOfVol) -
+		pathPara.Kappa * pathPara.Rho * (pathPara.Theta - sigma * sigma) / pathPara.VolOfVol
+		) * deltaT;
+}
+
+
+
+/////////////////////////////////////////
+
 
 Path::~Path()
 {
