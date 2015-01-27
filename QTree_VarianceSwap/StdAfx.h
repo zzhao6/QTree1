@@ -20,7 +20,7 @@ using namespace std;
 #define NCHILDREN 4
 
 // ========= input parameters ====================
-#define PROB 1/10.0f
+#define PROB 1.0/6.0f
 #define INTEREST 0.1f
 #define NCHILDREN 4	// every node has 4 successors
 #define MATURITY 1

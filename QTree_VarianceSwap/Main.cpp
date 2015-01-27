@@ -3,8 +3,17 @@
 #include "AnalyticFormulae.h"
 #include "myLogger.h"
 
-double MCHeston(Para& para, int numPath, long seedPath, int sigmaType = 1)
+
+inline double random01Uniform();
+vector <double> monteCarlo_Heston_VarianceSwap(Para& para, int numPath);
+
+
+vector <double> MCHeston(Para& para, int numPath, long seedPath, int sigmaType = 1)
 {
+	vector <double> results;
+	results.clear();
+	results.reserve(numPath+1);
+
 	if (sigmaType != 1)
 	{
 		try
@@ -16,7 +25,7 @@ double MCHeston(Para& para, int numPath, long seedPath, int sigmaType = 1)
 			cout << "Sigma Type has to be 2 in MC Heston!" << endl;
 		}
 	}
-	double resultSum = 0;
+	double resultSum = 0.0;
 	//for (int i = 0; i < numPath; i++)
 	for (int i = 0; i < numPath+1; i++)
 	{
@@ -25,15 +34,28 @@ double MCHeston(Para& para, int numPath, long seedPath, int sigmaType = 1)
 		onePath.buildAndCalc_variance_sim();
 		double tmpPrice = onePath.getOptionValue_variance_sim();
 
-		if (i>0)
-		{
 			resultSum += tmpPrice;
-			printf("MC, %d, %f\n", i, tmpPrice);
-		}
+			printf("Tree, %d, %f\n", i, tmpPrice);
 
 	}
 	
-	return resultSum / numPath;
+	double mean = (resultSum-results[0]) / numPath;
+
+	double variance = 0.0;
+	for (int i=1; i < numPath+1; i++)
+	{
+		variance += (results[i]-mean)*(results[i]-mean);
+	}
+	variance = variance / numPath;
+	double stddev = sqrt(variance);
+	double stderr = stddev / sqrt(numPath);
+
+	vector <double> statistics;
+	statistics.push_back(mean);
+	statistics.push_back(stderr);
+
+
+	return statistics;
 }
 
 
@@ -140,26 +162,139 @@ int main()
 	// 1/12 = 0.083, 1/6 = 0.1667
 	// p = 0.085~0.165
 
-	double Probs[9] = { 0.085, 0.095, 0.105, 0.115, 0.125, 0.135, 0.145, 0.155, 0.165 };
-	int numMC = 6;
+//	double Probs[9] = { 0.085, 0.095, 0.105, 0.115, 0.125, 0.135, 0.145, 0.155, 0.165 };
+//	int numMC = 6;
+//
+//	LOGGER->Log("MC = 100\n");
+//	LOGGER->Log("Imput Probability, Tree Sim, Heston Sim, HestonStd\n");
+//
+//	for (int iProb = 0; iProb < 9; iProb++)
+//	{
+//		para1.Prob = Probs[iProb];
+//		double priceQTree = MCHeston(para1, numMC, seedPath);
+//		double priceHestonSim = fairStrike_simVarianceSwap_Heston_ZL(para1);
+//		double priceHestonStd = 0;
+//
+//		cout << iProb << ", " << priceQTree << endl;
+//		LOGGER->Log("%f,%f,%f,%f\n", Probs[iProb], priceQTree, priceHestonSim, priceHestonStd);
+//
+//	}
+//
 
+	//sixth test on Monte Carlo simulation
+	LOGGER->Log("Monte Carlo simulation on simple Realized Variance with Heston\n");
 	LOGGER->Log("MC = 100\n");
-	LOGGER->Log("Imput Probability, Tree Sim, Heston Sim, HestonStd\n");
+	int numMC = 100;
 
-	for (int iProb = 0; iProb < 9; iProb++)
-	{
-		para1.Prob = Probs[iProb];
-		double priceQTree = MCHeston(para1, numMC, seedPath);
-		double priceHestonSim = fairStrike_simVarianceSwap_Heston_ZL(para1);
-		double priceHestonStd = 0;
+	vector <double> MC_statis = monteCarlo_Heston_VarianceSwap(para1,numMC);
+	vector <double> Tree_statis = MCHeston(para1, numMC, seedPath);
 
-		cout << iProb << ", " << priceQTree << endl;
-		LOGGER->Log("%f,%f,%f,%f\n", Probs[iProb], priceQTree, priceHestonSim, priceHestonStd);
+	LOGGER->Log("MC Sim, MC StdErr, Tree Sim, Tree StdErr\n");
+	LOGGER->Log("%f,%f,%f,%f\n", MC_statis[0], MC_statis[1], Tree_statis[0], Tree_statis[1]);
 
-	}
-
-
- 	
 	//system("pause");
 	return 0;
 }
+
+inline double random01Uniform(){
+	//generate a number bt 0~1
+	return rand()/double(RAND_MAX);
+}
+
+
+vector <double> monteCarlo_Heston_VarianceSwap(Para& para, int numPath)
+{
+	double mean = 0.0, stderr = 0.0;
+	vector <double> results;
+	results.reserve(numPath);
+
+	double X0 = log(para.StartPrice);
+	double T = para.Maturity;
+	int steps = para.Steps;
+	double Delta_t = T/steps;
+	double sqrt_Delta_t = sqrt(Delta_t);
+
+	double Y0 = para.Vol0;
+	double r = para.Interest;
+	double sigma_Y = para.VolOfVol;
+	double theta = para.Theta;
+	double kappa = para.Kappa;
+	double rho = para.Rho;
+
+	for (int i = 1;i <= numPath; i++) //path number = numPath
+	{
+	//within every path:
+
+		double X_temp = X0;
+		double Y_temp = Y0;
+
+		// simple return realized variancej
+		double realizedVariance = 0.0;
+
+		for (int j = 1; j <= steps; j++)
+		{
+			double S_old = exp(X_temp);
+
+			//Box-Muller to generate two standard normal rv: e1 and e2
+			double U1 	= random01Uniform();
+			double U2 	= random01Uniform();
+			double R	= sqrt((-2)*log(U1));
+			double angle =  2* M_PI *U2;
+			double e1	= R*cos(angle);
+			double e2	= R*sin(angle);
+
+			//evolution
+			X_temp = X_temp + ( r - Y_temp ) * Delta_t + sqrt(Y_temp) * sqrt_Delta_t * e1;
+			Y_temp = Y_temp + kappa*( theta -Y_temp) * Delta_t +
+						sigma_Y * sqrt(Y_temp) * ( rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)
+						+.25*sigma_Y*sigma_Y
+							* ( (rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)
+								*(rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)-Delta_t);
+
+			if (Y_temp <= 0.0){ cout<< "the variance becomes negative!\n";}
+
+			double S_new = exp(X_temp);
+
+			realizedVariance += ((S_new - S_old) / S_old) * ((S_new - S_old) / S_old);
+		}
+
+		realizedVariance = ( T*252 /steps)* exp(-r * T) * realizedVariance * 10000 ;
+
+		cout << i << ", " << realizedVariance <<endl;
+		mean += realizedVariance;
+		results.push_back(realizedVariance);
+
+	}
+
+	mean = mean / numPath;
+
+	double variance = 0.0;
+	for (int i = 0; i < numPath; i++)
+	{
+		variance += (results[i] - mean) * (results[i] - mean);
+	}
+	variance = variance / numPath;
+	double stddev = sqrt(variance);
+	stderr = stddev / sqrt(numPath);
+
+	vector <double> statistics;
+	statistics.clear();
+	statistics.push_back(mean);
+	statistics.push_back(stderr);
+
+	return statistics;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
