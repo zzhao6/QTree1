@@ -13,7 +13,7 @@ double MCHeston(Para& para, int numPath, int sigmaType = 1)
 		}
 		catch (int e)
 		{
-			cout << "Sigma Type has to be 2 in MC Heston!" << endl;
+			cout << "Sigma Type has to be 1 in MC Heston!" << endl;
 		}
 	}
 	double resultSum = 0;
