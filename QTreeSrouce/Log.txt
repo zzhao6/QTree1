@@ -1,2 +1,11 @@
-Prob, QTree, HestonCall, HestonPut
-0.085000
+Rho = -0.500000, Heston Price = 10.918021, QTree = 20.830235
+Rho = -0.400000, Heston Price = 10.918021, QTree = 19.204870
+Rho = -0.300000, Heston Price = 10.904652, QTree = 20.718716
+Rho = -0.200000, Heston Price = 10.890697, QTree = 22.418525
+Rho = -0.100000, Heston Price = 10.876138, QTree = 23.091269
+Rho = 0.000000, Heston Price = 10.860961, QTree = 23.598865
+Rho = 0.100000, Heston Price = 10.845159, QTree = 23.412832
+Rho = 0.200000, Heston Price = 10.828731, QTree = 24.261742
+Rho = 0.300000, Heston Price = 10.811689, QTree = 23.905057
+Rho = 0.400000, Heston Price = 10.794051, QTree = 18.701574
+Rho = 0.500000, Heston Price = 10.775852, QTree = 21.195787
