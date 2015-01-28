@@ -81,56 +81,56 @@ int main()
 
 	// second test, different interest rate
 	
-	//double priceQTreeVec[15];
-	//double priceBSVec[15];
-	//LOGGER->Log("Interest Rate, Tree Call, BS Call, Tree Put, BS Put\n");
-	//for (int i = 1; i <= 15; i++)
-	//{
-	//	double tmpInterest = i / 100.0;
-	//	para1.Interest = tmpInterest;
-	//	Path onePath(para1, sigmaType);
-	//	onePath.buildAndCalc();
-	//	double priceQTree = onePath.getOptionValue();
-	//	double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-	//	double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-	//	cout << i << ", " << priceQTree << ", " << priceBSCall << ", " << priceBSPut << endl;
-	//	LOGGER->Log("%f,%f,%f,%f\n", tmpInterest, priceQTree, priceBSCall, priceBSPut);
-	//}
+	// double priceQTreeVec[15];
+	// double priceBSVec[15];
+	// LOGGER->Log("Interest Rate, Tree Call, BS Call, Tree Put, BS Put\n");
+	// for (int i = 1; i <= 15; i++)
+	// {
+		// double tmpInterest = i / 100.0;
+		// para1.Interest = tmpInterest;
+		// Path onePath(para1, sigmaType);
+		// onePath.buildAndCalc();
+		// double priceQTree = onePath.getOptionValue();
+		// double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+		// double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+		// cout << i << ", " << priceQTree << ", " << priceBSCall << ", " << priceBSPut << endl;
+		// LOGGER->Log("%f,%f,%f,%f\n", tmpInterest, priceQTree, priceBSCall, priceBSPut);
+	// }
 
 
 	// third test
-	//int stepVec[5] = { 52, 252, 504, 1008, 2016 };
-	//int strikeVec[5] = { 90, 95, 100, 105, 110 };
-	//double sigmaVec[5] = { 0.1, 0.2, 0.3, 0.4, 0.5 };
+	int stepVec[5] = { 52, 252, 504, 1008, 2016 };
+	int strikeVec[5] = { 90, 95, 100, 105, 110 };
+	double sigmaVec[5] = { 0.1, 0.2, 0.3, 0.4, 0.5 };
 
-	// for easier test, set idx bound
-	//const int IDXBOUND = 2;
+	//for easier test, set idx bound
+	const int IDXBOUND = 5;
 
-	//LOGGER->Log("Steps, %d,%d,%d,%d,%d", stepVec[0], stepVec[1], stepVec[2], stepVec[3], stepVec[4]);
-	//for (int iSigma = 0; iSigma < IDXBOUND; iSigma++)
-	//{
-	//	para1.Sigma = sigmaVec[iSigma];
-	//	LOGGER->Log("\nSigma = %f", para1.Sigma);
-	//	for (int iK = 0; iK < IDXBOUND; iK++)
-	//	{
-	//		para1.Strike = strikeVec[iK];
-	//		LOGGER->Log("\nK = %f", para1.Strike);
-	//		for (int iStep = 0; iStep < IDXBOUND; iStep++)
-	//		{
-	//			para1.Steps = stepVec[iStep];
-	//			cout << para1.Sigma << " " << para1.Strike << " " << para1.Steps << endl;
-	//			Path onePath(para1, sigmaType);
-	//			onePath.buildAndCalc();
-	//			double priceQTree = onePath.getOptionValue();
-	//			LOGGER->Log(",%f", priceQTree);
-	//		}
-	//		double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-	//		LOGGER->Log(",%f", priceBSCall);
+	LOGGER->Log("Steps, %d,%d,%d,%d,%d", stepVec[0], stepVec[1], stepVec[2], stepVec[3], stepVec[4]);
+	for (int iSigma = 0; iSigma < IDXBOUND; iSigma++)
+	{
+		para1.Sigma = sigmaVec[iSigma];
+		LOGGER->Log("\nSigma = %f", para1.Sigma);
+		for (int iK = 0; iK < IDXBOUND; iK++)
+		{
+			para1.Strike = strikeVec[iK];
+			LOGGER->Log("\nK = %f", para1.Strike);
+			for (int iStep = 0; iStep < 3; iStep++)
+			{
+				para1.Steps = stepVec[iStep];
+				cout << para1.Sigma << " " << para1.Strike << " " << para1.Steps << endl;
+				Path onePath(para1, sigmaType);
+				onePath.buildAndCalc();
+				double priceQTree = onePath.getOptionValue();
+				LOGGER->Log(",%f", priceQTree);
+			}
+			// double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+			// LOGGER->Log(",%f", priceBSCall);
 
-	//		//double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-	//		//LOGGER->Log(",%f", priceBSPut);
-	//	}
-	//}
+			double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+			LOGGER->Log(",%f", priceBSPut);
+		}
+	}
 
 
 
