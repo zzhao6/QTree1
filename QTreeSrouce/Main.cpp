@@ -64,18 +64,23 @@ int main()
 	// sigmaType = 1	stoch sigma
 	int sigmaType = 0;
 
-	// Black Shcoles Tests
+	// Black Scholes Tests
 
 	// first test, one path
-	Path onePath(para1, sigmaType);
-	onePath.buildAndCalc();
-	double priceQTree = onePath.getOptionValue();
-	double priceBS = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	
+	//Path onePath(para1, sigmaType);
+	//onePath.buildAndCalc();
+	//cout << "Rho = " << para1.Rho << endl;
+	//double priceQTree = onePath.getOptionValue();
+	//cout << priceQTree << endl;
 
-	cout << priceBS << endl;
-	cout << priceQTree << endl;
+	////double priceBS = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//double priceBS = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//cout << priceBS << endl;
+
 
 	// second test, different interest rate
+	
 	//double priceQTreeVec[15];
 	//double priceBSVec[15];
 	//LOGGER->Log("Interest Rate, Tree Call, BS Call, Tree Put, BS Put\n");

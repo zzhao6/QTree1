@@ -4,11 +4,14 @@ Path::Path(Para& outPara, int sigmaType)
 {
 	this->pathPara = outPara;
 	this->optValuePath = 0;
-	this->paraVec.resize(pathPara.Steps + 1);
-	for (int i = 0; i < pathPara.Steps + 1;i++)
-	{
-		this->paraVec[i] = this->pathPara;
-	}
+	//this->paraVec.resize(pathPara.Steps + 1);
+
+	this->paraVec = vector<Para>(pathPara.Steps + 1, pathPara);
+
+	//for (int i = 0; i < pathPara.Steps + 1;i++)
+	//{
+	//	this->paraVec[i] = this->pathPara;
+	//}
 	
 	//generate sigma vector
 	switch (sigmaType)
@@ -57,65 +60,53 @@ Path::Path(Para& outPara, int sigmaType)
 
 	///////////////////////////////////////////////////////////////
 	// test drift and grid functions
-	if (this->pathPara.Rho == 0)
-	{
-		// generate grids and drifts with no correlation
-	}
-	else
-	{
-		// generate grids and drifts with correlation
-	}
-
-
-
-	pathPara.grid = paraVec[0].Sigma * sqrt(dt);
-	pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
-
-	for (int i = 1; i < pathPara.Steps + 1; i++)	// totally 
-	{
-		paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
-		paraVec[i].drift = (pathPara.Interest - paraVec[i].Sigma * paraVec[i].Sigma / 2) * dt;
-	}
+	this->genDriftsAndGrids();
 	///////////////////////////////////////////////////////////////
 
-	// seeds inside paths are discarded
-
+	// seeds inside paths are obsolete
 	//srand(pathSeed);
 }
 
 /////////////////////////////////////////
-// correlated SDEs:
-double Path::gridUnCorr(double sigma, double deltaT)
+void Path::genDriftsAndGrids()
 {
-	// sigma * sqrt(dt)
-	return sigma * sqrt(deltaT);
+	double dt = this->pathPara.Maturity / this->pathPara.Steps;
+
+	if (this->pathPara.Rho == 0)
+	{
+		// tree and vol are uncorrelated
+		pathPara.grid = paraVec[0].Sigma * sqrt(dt);
+		pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
+
+		for (int i = 1; i<pathPara.Steps + 1; i++)
+		{
+			paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
+			paraVec[i].drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
+		}
+	}
+	else
+	{
+		// tree and vol are correlated
+		pathPara.grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[0].Sigma * sqrt(dt);
+		
+		pathPara.drift = 
+			(
+			pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2 - 
+			pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[0].Sigma * paraVec[0].Sigma) / pathPara.VolOfVol
+			) * dt;
+
+		for (int i = 1; i<pathPara.Steps + 1; i++)
+		{
+			paraVec[i].grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[i].Sigma * sqrt(dt);
+			paraVec[i].drift = 
+				(
+				pathPara.Interest - paraVec[i].Sigma * paraVec[0].Sigma / 2 - 
+				pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[i].Sigma * paraVec[i].Sigma) / pathPara.VolOfVol
+				) * dt;
+		}
+	}
+
 }
-
-
-double Path::gridCorr(double sigma, double deltaT)
-{
-	// rho_bar * sigma * sqrt(dt)
-	return sqrt(1 - this->pathPara.Rho * this->pathPara.Rho) * sigma * sqrt(deltaT);
-}
-
-double Path::driftUnCorr(double sigma, double deltaT)
-{
-	return (this->pathPara.Interest - sigma * sigma / 2) * deltaT;
-}
-
-double Path::driftCorr(double sigma, double deltaT)
-{
-	return 
-		(
-		pathPara.Interest -
-		0.5 * sigma * sigma * (1 - pathPara.VolOfVol * pathPara.VolOfVol) -
-		pathPara.Kappa * pathPara.Rho * (pathPara.Theta - sigma * sigma) / pathPara.VolOfVol
-		) * deltaT;
-}
-
-
-
-/////////////////////////////////////////
 
 
 Path::~Path()
