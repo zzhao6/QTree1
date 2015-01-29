@@ -49,7 +49,11 @@ using namespace std;
 #define VOL0 0.2
 
 #define LAMBDA 0
+<<<<<<< HEAD
+#define RHO -0.5
+=======
 #define RHO 0
+>>>>>>> 08579ec9eb22000538e0055b2f839c9020f7100b
 
 //quadrature parameters
 #define EPS 3.0e-11
