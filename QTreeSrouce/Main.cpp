@@ -239,25 +239,27 @@ int main()
 
 
 
-	// test 2: test seed
-	//double seedPriceQTree = MCHeston(para1, 20);
+	// test 2: test MC
+	//double seedPriceQTree = MCHeston(para1, 100);
 	//cout << "QTree:\t" << seedPriceQTree << endl;
 	//cout << "Call:\t" << EuroCall_Heston(para1) << endl;
 	//cout << "Put: \t" << EuroPut_Heston(para1) << endl;
 
 
-	// test 2.1: test Analytical of heston on Rho
-	//double RhoVec[11] = {-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5};
-	//
-	//for (int i=0; i<11; i++)
-	//{
-	//	double PriceCallAna = EuroPut_Heston(para1);
-	//	double PriceQTree = MCHeston(para1, 20);
+	// test 3: test Analytical of heston on Rho
+	double RhoVec[11] = {-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5};
+	int numMC = 500;
+	LOGGER->Log("Rho,QTree,HestonCall,HestonPut\n");
+	for (int i=0; i<11; i++)
+	{
+		double PriceCallAna = EuroCall_Heston(para1); 
+		double PricePutAna = EuroPut_Heston(para1);
+		double PriceQTree = MCHeston(para1, numMC);
 
-	//	para1.Rho = RhoVec[i];
-	//	cout << "Rho = " << RhoVec[i] << ", Heston Price = " << PriceCallAna << ", QTree = " << PriceQTree << endl;
-	//	LOGGER->Log("Rho = %f, Heston Price = %f, QTree = %f\n", RhoVec[i], PriceCallAna, PriceQTree);
-	//}
+		para1.Rho = RhoVec[i];
+		cout << "Rho = " << RhoVec[i] << ", Heston Price = " << PriceCallAna << ", QTree = " << PriceQTree << endl;
+		LOGGER->Log("%f,%f,%f,%f\n", RhoVec[i], PriceQTree, PriceCallAna, PricePutAna);
+	}
 
 
 	

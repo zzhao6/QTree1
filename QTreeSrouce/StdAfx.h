@@ -25,7 +25,7 @@ using namespace std;
 #define INTEREST 0.03f
 #define NCHILDREN 4	// every node has 4 successors
 #define MATURITY 1
-#define STEPS 1008
+#define STEPS 252
 #define PATH 1
 #define POOLSIZE PATH*STEPS
 
