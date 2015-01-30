@@ -166,9 +166,12 @@ void Path::genSigmaHeston()
 		paraVec[i].Sigma = paraVec[i - 1].Sigma + pathPara.Kappa* (pathPara.Theta - paraVec[i - 1].Sigma) * pathPara.Maturity / pathPara.Steps +
 						   pathPara.VolOfVol*sqrt(pathPara.Maturity / pathPara.Steps * paraVec[i - 1].Sigma) * epsilon;
 	}
-	for (int i = 0; i < pathPara.Steps + 1; i++)
+
+	paraVec[0].Sigma = sqrt(paraVec[0].Sigma);
+	for (int i = 1; i < pathPara.Steps + 1; i++)
 	{
 		paraVec[i].Sigma = sqrt(paraVec[i].Sigma);
+		paraVec[1].PrevSigma = sqrt(paraVec[0].Sigma);
 	}
 }
 

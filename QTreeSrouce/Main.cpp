@@ -52,22 +52,35 @@ int main()
 	para1.Lambda = LAMBDA;
 	para1.Rho = RHO;
 
-	//time_t timer;
-	//time(&timer);
-	//long seedPath = timer;
+	time_t timer;
+	time(&timer);
+	long timerSeed = timer;
 
 	long glbSeed = GLOBALSEED;
-	srand(glbSeed);
-	//srand(1000);
+	//srand(glbSeed);
+	srand(timerSeed);
+
 
 	// sigmaType = 0	constant sigma
 	// sigmaType = 1	stoch sigma
 	int sigmaType = 0;
 
 	// Black Scholes Tests
-
+	///////////////////////////////////////////////////////////
 	// first test, one path
-	
+	// make sure that rho is zero for BS test
+
+	//if (para1.Rho != 0)
+	//{
+	//	try
+	//	{
+	//		throw 4;
+	//	}
+	//	catch (int e)
+	//	{
+	//		cout << "Rho cannot be non-zero in BS test!" << endl;
+	//	}
+	//}
 	//Path onePath(para1, sigmaType);
 	//onePath.buildAndCalc();
 	//cout << "Rho = " << para1.Rho << endl;
@@ -79,58 +92,137 @@ int main()
 	//cout << priceBS << endl;
 
 
+
+	///////////////////////////////////////////////////////////
 	// second test, different interest rate
-	
-	// double priceQTreeVec[15];
-	// double priceBSVec[15];
-	// LOGGER->Log("Interest Rate, Tree Call, BS Call, Tree Put, BS Put\n");
-	// for (int i = 1; i <= 15; i++)
-	// {
-		// double tmpInterest = i / 100.0;
-		// para1.Interest = tmpInterest;
-		// Path onePath(para1, sigmaType);
-		// onePath.buildAndCalc();
-		// double priceQTree = onePath.getOptionValue();
-		// double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-		// double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-		// cout << i << ", " << priceQTree << ", " << priceBSCall << ", " << priceBSPut << endl;
-		// LOGGER->Log("%f,%f,%f,%f\n", tmpInterest, priceQTree, priceBSCall, priceBSPut);
-	// }
+	// make sure that rho is zero for BS test
+
+	//if (para1.Rho != 0)
+	//{
+	//	try
+	//	{
+	//		throw 4;
+	//	}
+	//	catch (int e)
+	//	{
+	//		cout << "Rho cannot be non-zero in BS test!" << endl;
+	//	}
+	//}
+	//double priceQTreeVec[15];
+	//double priceBSVec[15];
+	//LOGGER->Log("Interest Rate, Tree Call, BS Call, Tree Put, BS Put\n");
+	//for (int i = 1; i <= 15; i++)
+	//{
+	//	double tmpInterest = i / 100.0;
+	//	para1.Interest = tmpInterest;
+	//	Path onePath(para1, sigmaType);
+	//	onePath.buildAndCalc();
+	//	double priceQTree = onePath.getOptionValue();
+	//	double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//	double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//	cout << i << ", " << priceQTree << ", " << priceBSCall << ", " << priceBSPut << endl;
+	//	LOGGER->Log("%f,%f,%f,%f\n", tmpInterest, priceQTree, priceBSCall, priceBSPut);
+	//}
 
 
-	// third test
-	int stepVec[5] = { 52, 252, 504, 1008, 2016 };
-	int strikeVec[5] = { 90, 95, 100, 105, 110 };
-	double sigmaVec[5] = { 0.1, 0.2, 0.3, 0.4, 0.5 };
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 
-	//for easier test, set idx bound
-	const int IDXBOUND = 5;
+	//// third test
 
-	LOGGER->Log("Steps, %d,%d,%d,%d,%d", stepVec[0], stepVec[1], stepVec[2], stepVec[3], stepVec[4]);
-	for (int iSigma = 0; iSigma < IDXBOUND; iSigma++)
-	{
-		para1.Sigma = sigmaVec[iSigma];
-		LOGGER->Log("\nSigma = %f", para1.Sigma);
-		for (int iK = 0; iK < IDXBOUND; iK++)
-		{
-			para1.Strike = strikeVec[iK];
-			LOGGER->Log("\nK = %f", para1.Strike);
-			for (int iStep = 0; iStep < 3; iStep++)
-			{
-				para1.Steps = stepVec[iStep];
-				cout << para1.Sigma << " " << para1.Strike << " " << para1.Steps << endl;
-				Path onePath(para1, sigmaType);
-				onePath.buildAndCalc();
-				double priceQTree = onePath.getOptionValue();
-				LOGGER->Log(",%f", priceQTree);
-			}
-			// double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-			// LOGGER->Log(",%f", priceBSCall);
+	// make sure that rho is zero for BS test
 
-			double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
-			LOGGER->Log(",%f", priceBSPut);
-		}
-	}
+	//if (para1.Rho != 0)
+	//{
+	//	try
+	//	{
+	//		throw 4;
+	//	}
+	//	catch (int e)
+	//	{
+	//		cout << "Rho cannot be non-zero in BS test!" << endl;
+	//	}
+	//}
+	//int stepVec[5] = { 52, 252, 504, 1008, 2016 };
+	//int strikeVec[5] = { 90, 95, 100, 105, 110 };
+	//double sigmaVec[5] = { 0.1, 0.2, 0.3, 0.4, 0.5 };
+
+	////for easier test, set idx bound
+	//const int IDXBOUND = 5;
+
+	//LOGGER->Log("Steps, %d,%d,%d,%d,%d", stepVec[0], stepVec[1], stepVec[2], stepVec[3], stepVec[4]);
+	//for (int iSigma = 0; iSigma < IDXBOUND; iSigma++)
+	//{
+	//	para1.Sigma = sigmaVec[iSigma];
+	//	LOGGER->Log("\nSigma = %f", para1.Sigma);
+	//	for (int iK = 0; iK < IDXBOUND; iK++)
+	//	{
+	//		para1.Strike = strikeVec[iK];
+	//		LOGGER->Log("\nK = %f", para1.Strike);
+	//		for (int iStep = 0; iStep < 3; iStep++)
+	//		{
+	//			para1.Steps = stepVec[iStep];
+	//			cout << para1.Sigma << " " << para1.Strike << " " << para1.Steps << endl;
+	//			Path onePath(para1, sigmaType);
+	//			onePath.buildAndCalc();
+	//			double priceQTree = onePath.getOptionValue();
+	//			LOGGER->Log(",%f", priceQTree);
+	//		}
+	//		// double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//		// LOGGER->Log(",%f", priceBSCall);
+
+	//		double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//		LOGGER->Log(",%f", priceBSPut);
+	//	}
+	//}
+
+
+
+
+	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
+	// fourth test BS
+	// prob test
+
+	// 1/12 < p < 1/6
+	// 1/12 = 0.083, 1/6 = 0.1667
+	// p = 0.085~0.165
+
+	//const int IDXBOUND = 9;
+	//double Probs[9] = { 0.085, 0.095, 0.105, 0.115, 0.125, 0.135, 0.145, 0.155, 0.165 };
+
+	//// make sure that rho is zero for BS test
+	//
+	//if (para1.Rho != 0)
+	//{
+	//	try
+	//	{
+	//		throw 4;
+	//	}
+	//	catch (int e)
+	//	{
+	//		cout << "Rho cannot be non-zero in BS test!" << endl;
+	//	}
+	//}
+	//
+
+	////LOGGER->Log("Test on magic Prob\n");
+	//LOGGER->Log("Step = %d,Interest Rate = %f\n", para1.Steps, para1.Interest);
+	//LOGGER->Log("Prob,QTree,BSCall,BSPut\n");
+	//for (int i = 0; i < IDXBOUND; i++)
+	//{
+	//	cout << "i = " << i << ", Prob = " << Probs[i] << endl;
+	//	
+	//	para1.Prob = Probs[i];
+	//	Path onePath(para1, sigmaType);
+	//	onePath.buildAndCalc();
+	//	double priceQTree = onePath.getOptionValue();
+
+	//	double priceBSCall = eropeanCallPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//	double priceBSPut = eropeanPutPrice_BS(para1.StartPrice, para1.Maturity, para1.Strike, para1.Sigma, para1.Interest);
+	//	
+	//	LOGGER->Log("%f, %f, %f, %f\n", para1.Prob, priceQTree, priceBSCall, priceBSPut);
+	//}
 
 
 
@@ -155,17 +247,17 @@ int main()
 
 
 	// test 2.1: test Analytical of heston on Rho
-	double RhoVec[11] = {-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5};
-	
-	for (int i=0; i<11; i++)
-	{
-		double PriceCallAna = EuroPut_Heston(para1);
-		double PriceQTree = MCHeston(para1, 20);
+	//double RhoVec[11] = {-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5};
+	//
+	//for (int i=0; i<11; i++)
+	//{
+	//	double PriceCallAna = EuroPut_Heston(para1);
+	//	double PriceQTree = MCHeston(para1, 20);
 
-		para1.Rho = RhoVec[i];
-		cout << "Rho = " << RhoVec[i] << ", Heston Price = " << PriceCallAna << ", QTree = " << PriceQTree << endl;
-		LOGGER->Log("Rho = %f, Heston Price = %f, QTree = %f\n", RhoVec[i], PriceCallAna, PriceQTree);
-	}
+	//	para1.Rho = RhoVec[i];
+	//	cout << "Rho = " << RhoVec[i] << ", Heston Price = " << PriceCallAna << ", QTree = " << PriceQTree << endl;
+	//	LOGGER->Log("Rho = %f, Heston Price = %f, QTree = %f\n", RhoVec[i], PriceCallAna, PriceQTree);
+	//}
 
 
 	

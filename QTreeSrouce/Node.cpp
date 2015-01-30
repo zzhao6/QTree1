@@ -107,12 +107,30 @@ void Node::baCalc()
 }
 
 
-// for Nodes in the last TS
+//// for Nodes in the last TS
+//void Node::calcPayOff()
+//{
+//	double price = exp(x);
+//	optValueNode = max(price - nodePara.Strike, 0.0);		// European Call
+//	//optValueNode = max(this->nodePara.Strike - price, 0.0);	// European Put
+//}
+
+
 void Node::calcPayOff()
 {
-	double price = exp(x);
-	optValueNode = max(price - nodePara.Strike, 0.0);		// European Call
-	//optValueNode = max(this->nodePara.Strike - price, 0.0);	// European Put
+	double price = 0.0;
+	if (this->nodePara.Rho == 0)
+	{
+		price = exp(x);
+	}
+	else
+	{
+		//cout << "Rho is not zero" << endl;
+		// Rho != 0, generated Y_t and get back to X_t here
+		price = exp(x + nodePara.Rho * nodePara.PrevSigma / nodePara.VolOfVol);
+	}
+	//optValueNode = max(price - nodePara.Strike, 0.0);			// European Call
+	optValueNode = max(this->nodePara.Strike - price, 0.0);	// European Put
 }
 
 

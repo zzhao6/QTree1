@@ -10,6 +10,7 @@ struct Para
 	double Strike;
 	double Interest;
 	double Sigma;
+	double PrevSigma;	// for calculation in the terminal nodes
 
 	// Heston parameters
 	double Kappa;

@@ -1,27 +1,21 @@
-﻿Build started 1/30/2015 9:47:53 AM.
+﻿Build started 1/30/2015 11:51:26 AM.
      1>Project "C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\QTreeSrouce\AnalyticFormulae.cpp ..\..\..\QTreeSrouce\Main.cpp ..\..\..\QTreeSrouce\Node.cpp ..\..\..\QTreeSrouce\Path.cpp ..\..\..\QTreeSrouce\TimeSlice.cpp
+         Node.cpp
+     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\node.cpp(11): warning C4101: 'e' : unreferenced local variable
+         Main.cpp
+     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\main.cpp(14): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\main.cpp(57): warning C4244: 'initializing' : conversion from 'time_t' to 'long', possible loss of data
+     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\main.cpp(156): warning C4101: 'e' : unreferenced local variable
+         Generating Code...
+         Compiling...
          TimeSlice.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(53): warning C4005: 'RHO' : macro redefinition
-                 c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(52) : see previous definition of 'RHO'
          Path.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(53): warning C4005: 'RHO' : macro redefinition
-                 c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(52) : see previous definition of 'RHO'
      1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\path.cpp(31): warning C4101: 'e' : unreferenced local variable
      1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\path.cpp(45): warning C4101: 'e' : unreferenced local variable
      1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\path.cpp(114): warning C4018: '<' : signed/unsigned mismatch
-         Node.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(53): warning C4005: 'RHO' : macro redefinition
-                 c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(52) : see previous definition of 'RHO'
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\node.cpp(11): warning C4101: 'e' : unreferenced local variable
-         Main.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(53): warning C4005: 'RHO' : macro redefinition
-                 c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(52) : see previous definition of 'RHO'
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\main.cpp(14): warning C4101: 'e' : unreferenced local variable
          AnalyticFormulae.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(53): warning C4005: 'RHO' : macro redefinition
-                 c:\users\hfsladmin\documents\github\qtree\qtreesrouce\stdafx.h(52) : see previous definition of 'RHO'
      1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(254): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(302): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
      1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(303): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
@@ -39,4 +33,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.03
+Time Elapsed 00:00:03.88
