@@ -23,12 +23,12 @@ using namespace std;
 #define PROB 1.0/6.0f
 #define INTEREST 0.1f
 #define NCHILDREN 4	// every node has 4 successors
-#define MATURITY 1
-#define STEPS MATURITY*252
+#define MATURITY 1.0
+#define STEPS MATURITY*4
 #define PATH 1
 #define POOLSIZE PATH*STEPS
 
-#define	STARTPRICE 100
+#define	STARTPRICE 1.0
 #define STRIKE 90
 
 // tmp param
@@ -48,7 +48,7 @@ using namespace std;
 #define VOL0 0.04
 
 #define LAMBDA 0
-#define RHO 0
+#define RHO -0.64
 
 //quadrature parameters
 #define EPS 3.0e-11

@@ -182,15 +182,28 @@ int main()
 //
 
 	//sixth test on Monte Carlo simulation
-	LOGGER->Log("Monte Carlo simulation on simple Realized Variance with Heston\n");
-	LOGGER->Log("MC = 100\n");
-	int numMC = 100;
+	LOGGER->Log("Monte Carlo simulation on simple Realized Variance with Heston, Euler-Maruyama\n");
+	LOGGER->Log("MC = 200000\n");
+	int numMC = 200000;
 
 	vector <double> MC_statis = monteCarlo_Heston_VarianceSwap(para1,numMC);
-	vector <double> Tree_statis = MCHeston(para1, numMC, seedPath);
+	double priceHestonSim = fairStrike_simVarianceSwap_Heston_ZL(para1);
 
-	LOGGER->Log("MC Sim, MC StdErr, Tree Sim, Tree StdErr\n");
-	LOGGER->Log("%f,%f,%f,%f\n", MC_statis[0], MC_statis[1], Tree_statis[0], Tree_statis[1]);
+	LOGGER->Log("MC Sim, MC StdErr, ZL Sim\n");
+	LOGGER->Log("%f,%f,%f\n", MC_statis[0], MC_statis[1], priceHestonSim);
+
+
+
+	//seventh test on Monte Carlo simulation
+//	LOGGER->Log("Monte Carlo simulation on simple Realized Variance with Heston\n");
+//	LOGGER->Log("MC = 100\n");
+//	int numMC = 100;
+//
+//	vector <double> MC_statis = monteCarlo_Heston_VarianceSwap(para1,numMC);
+//	vector <double> Tree_statis = MCHeston(para1, numMC, seedPath);
+//
+//	LOGGER->Log("MC Sim, MC StdErr, Tree Sim, Tree StdErr\n");
+//	LOGGER->Log("%f,%f,%f,%f\n", MC_statis[0], MC_statis[1], Tree_statis[0], Tree_statis[1]);
 
 	//system("pause");
 	return 0;
@@ -208,7 +221,7 @@ vector <double> monteCarlo_Heston_VarianceSwap(Para& para, int numPath)
 	vector <double> results;
 	results.reserve(numPath);
 
-	double X0 = log(para.StartPrice);
+	double S0 = para.StartPrice; //,X0 = log(para.StartPrice);
 	double T = para.Maturity;
 	int steps = para.Steps;
 	double Delta_t = T/steps;
@@ -221,11 +234,13 @@ vector <double> monteCarlo_Heston_VarianceSwap(Para& para, int numPath)
 	double kappa = para.Kappa;
 	double rho = para.Rho;
 
+	ofstream variancelog ("Vlog.csv");
+
 	for (int i = 1;i <= numPath; i++) //path number = numPath
 	{
 	//within every path:
 
-		double X_temp = X0;
+		double S_temp = S0; //X_temp = X0;
 		double Y_temp = Y0;
 
 		// simple return realized variancej
@@ -233,7 +248,7 @@ vector <double> monteCarlo_Heston_VarianceSwap(Para& para, int numPath)
 
 		for (int j = 1; j <= steps; j++)
 		{
-			double S_old = exp(X_temp);
+			double S_old = S_temp;//exp(X_temp);
 
 			//Box-Muller to generate two standard normal rv: e1 and e2
 			double U1 	= random01Uniform();
@@ -244,27 +259,55 @@ vector <double> monteCarlo_Heston_VarianceSwap(Para& para, int numPath)
 			double e2	= R*sin(angle);
 
 			//evolution
-			X_temp = X_temp + ( r - Y_temp ) * Delta_t + sqrt(Y_temp) * sqrt_Delta_t * e1;
+
+			//discritize X with Euler(Miltein)
+			//X_temp = X_temp + ( r - Y_temp ) * Delta_t + sqrt(Y_temp) * sqrt_Delta_t * e1;
+
+			//discritize S with Euler-Milstein
+			//S_temp = S_temp + r * S_temp * Delta_t + sqrt(Y_temp) * S_temp * sqrt_Delta_t * e1
+				//		+ 0.5 * Y_temp * S_temp * (Delta_t * e1 * e1 - Delta_t);
+
+			//discritize Y with Euler-Milstein
+			//Y_temp = Y_temp + kappa*( theta -Y_temp) * Delta_t +
+				//		sigma_Y * sqrt(Y_temp) * ( rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)
+					//	+.25*sigma_Y*sigma_Y
+						//	* ( (rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)
+							//	*(rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)-Delta_t);
+
+			//discritize S with Euler-Maruyama
+			double Y_temp_abs;
+			if (Y_temp < 0.0)
+			{
+				Y_temp_abs = - Y_temp;
+				//cout<< "the variance becomes negative!\n";
+			}
+			else {Y_temp_abs = Y_temp;}
+
+			S_temp = S_temp + r * S_temp * Delta_t + sqrt(Y_temp_abs) * S_temp * sqrt_Delta_t * e1;
+
+			//discritize Y with Euler-Maruyama
 			Y_temp = Y_temp + kappa*( theta -Y_temp) * Delta_t +
-						sigma_Y * sqrt(Y_temp) * ( rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)
-						+.25*sigma_Y*sigma_Y
-							* ( (rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)
-								*(rho*sqrt_Delta_t*e1+sqrt(1-rho*rho)*sqrt_Delta_t*e2)-Delta_t);
+						sigma_Y * sqrt(Y_temp_abs) * sqrt_Delta_t * ( rho*e1+sqrt(1-rho*rho)*e2);
 
-			if (Y_temp <= 0.0){ cout<< "the variance becomes negative!\n";}
+			double S_new = S_temp;//exp(X_temp);
 
-			double S_new = exp(X_temp);
+			//realizedVariance +=  ((S_new - S_old) / S_old) * ((S_new - S_old) / S_old);
 
-			realizedVariance += ((S_new - S_old) / S_old) * ((S_new - S_old) / S_old);
+			realizedVariance += exp(-r * j * Delta_t) * ((S_new - S_old) / S_old) * ((S_new - S_old) / S_old);
 		}
 
-		realizedVariance = ( T*252 /steps)* exp(-r * T) * realizedVariance * 10000 ;
+		//realizedVariance = ( T*252 /steps)* exp(-r * T) * realizedVariance * 10000 ;
+		//realizedVariance = ( T*52 /steps) * realizedVariance * 10000 ;
+		realizedVariance = ( T*4.0 /steps) * realizedVariance * 10000 ;
 
 		cout << i << ", " << realizedVariance <<endl;
+		variancelog << i << ", " << realizedVariance <<endl;
 		mean += realizedVariance;
 		results.push_back(realizedVariance);
 
 	}
+
+	variancelog.close();
 
 	mean = mean / numPath;
 
