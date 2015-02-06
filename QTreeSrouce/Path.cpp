@@ -78,7 +78,7 @@ void Path::genDriftsAndGrids()
 		pathPara.grid = paraVec[0].Sigma * sqrt(dt);
 		pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
 
-		for (int i = 1; i<pathPara.Steps + 1; i++)
+		for (int i = 1; i < pathPara.Steps + 1; i++)
 		{
 			paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
 			paraVec[i].drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
@@ -88,24 +88,30 @@ void Path::genDriftsAndGrids()
 	{
 		// tree and vol are correlated
 		pathPara.grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[0].Sigma * sqrt(dt);
-		
-		pathPara.drift = 
+
+		pathPara.drift =
 			(
-			pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2 - 
+			pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2 -
 			pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[0].Sigma * paraVec[0].Sigma) / pathPara.VolOfVol
 			) * dt;
 
-		for (int i = 1; i<pathPara.Steps + 1; i++)
+		for (int i = 1; i < pathPara.Steps + 1; i++)
 		{
 			paraVec[i].grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[i].Sigma * sqrt(dt);
-			paraVec[i].drift = 
+			paraVec[i].drift =
 				(
-				pathPara.Interest - paraVec[i].Sigma * paraVec[0].Sigma / 2 - 
+				pathPara.Interest - paraVec[i].Sigma * paraVec[0].Sigma / 2 -
 				pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[i].Sigma * paraVec[i].Sigma) / pathPara.VolOfVol
 				) * dt;
 		}
 	}
 
+
+
+	for (int i = 0; i < pathPara.Steps; i++)
+	{
+		LOGGER->Log("%f\n%f\n", paraVec[i].drift, paraVec[i].grid);
+	}
 }
 
 
@@ -168,10 +174,11 @@ void Path::genSigmaHeston()
 	}
 
 	paraVec[0].Sigma = sqrt(paraVec[0].Sigma);
+	paraVec[0].PrevSigma = -1;	// TODO: don't how to value this member
 	for (int i = 1; i < pathPara.Steps + 1; i++)
 	{
 		paraVec[i].Sigma = sqrt(paraVec[i].Sigma);
-		paraVec[1].PrevSigma = sqrt(paraVec[0].Sigma);
+		paraVec[i].PrevSigma = paraVec[i-1].Sigma;
 	}
 }
 
