@@ -1,34 +1,21 @@
-﻿Build started 1/30/2015 12:23:57 PM.
-     1>Project "C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 2/6/2015 2:00:41 PM.
+     1>Project "C:\Users\zhe\Documents\GitHub\QTreeGit\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\QTreeSrouce\AnalyticFormulae.cpp ..\..\..\QTreeSrouce\Main.cpp ..\..\..\QTreeSrouce\myLogger.cpp ..\..\..\QTreeSrouce\Node.cpp ..\..\..\QTreeSrouce\Path.cpp ..\..\..\QTreeSrouce\TimeSlice.cpp
-         TimeSlice.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\QTreeSrouce\Path.cpp
          Path.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\path.cpp(31): warning C4101: 'e' : unreferenced local variable
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\path.cpp(45): warning C4101: 'e' : unreferenced local variable
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\path.cpp(114): warning C4018: '<' : signed/unsigned mismatch
-         Node.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\node.cpp(11): warning C4101: 'e' : unreferenced local variable
-         myLogger.cpp
-         Main.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\main.cpp(14): warning C4101: 'e' : unreferenced local variable
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\main.cpp(57): warning C4244: 'initializing' : conversion from 'time_t' to 'long', possible loss of data
-         AnalyticFormulae.cpp
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(254): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(302): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(303): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\hfsladmin\documents\github\qtree\qtreesrouce\analyticformulae.cpp(304): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-         Generating Code...
+     1>c:\users\zhe\documents\github\qtreegit\qtree\qtreesrouce\path.cpp(31): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\zhe\documents\github\qtreegit\qtree\qtreesrouce\path.cpp(45): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\zhe\documents\github\qtreegit\qtree\qtreesrouce\path.cpp(120): warning C4018: '<' : signed/unsigned mismatch
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.lib" /MACHINE:X86 Debug\AnalyticFormulae.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\zhe\Documents\GitHub\QTreeGit\QTree\QTree_vsproj\QTree\Debug\QTree.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\zhe\Documents\GitHub\QTreeGit\QTree\QTree_vsproj\QTree\Debug\QTree.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\zhe\Documents\GitHub\QTreeGit\QTree\QTree_vsproj\QTree\Debug\QTree.lib" /MACHINE:X86 Debug\AnalyticFormulae.obj
          Debug\Main.obj
          Debug\myLogger.obj
          Debug\Node.obj
          Debug\Path.obj
          Debug\TimeSlice.obj
-         QTree.vcxproj -> C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\Debug\QTree.exe
-     1>Done Building Project "C:\Users\HFSLAdmin\Documents\GitHub\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" (Rebuild target(s)).
+         QTree.vcxproj -> C:\Users\zhe\Documents\GitHub\QTreeGit\QTree\QTree_vsproj\QTree\Debug\QTree.exe
+     1>Done Building Project "C:\Users\zhe\Documents\GitHub\QTreeGit\QTree\QTree_vsproj\QTree\QTree\QTree.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.88
+Time Elapsed 00:00:00.68

@@ -14,7 +14,10 @@
 #include <complex>
 
 #include "para.h"
+#include "myLogger.h"
 #include <stdio.h>
+#include <assert.h>
+
 using namespace std;
 
 #define GLOBALSEED 200
@@ -25,7 +28,7 @@ using namespace std;
 #define INTEREST 0.03f
 #define NCHILDREN 4	// every node has 4 successors
 #define MATURITY 1
-#define STEPS 252
+#define STEPS 10
 #define PATH 1
 #define POOLSIZE PATH*STEPS
 
@@ -49,6 +52,7 @@ using namespace std;
 #define VOL0 0.2
 
 #define LAMBDA 0
+//#define RHO -0.25
 #define RHO 0
 
 
