@@ -33,8 +33,11 @@ double integrand_phi(int j, double phi, Para para);
 void gauleg(float x1, float x2, float x[], float w[], int n);
 double integration_gauleg(int j, double(*integrand)(int, double), Para para);
 double P_j(int j, Para para);
-double EuroCall_Heston(Para para);
-double EuroPut_Heston(Para para);
+double EuroCall_Heston(Para& para);
+double EuroPut_Heston(Para& para);
 
+
+vector<double> PureMCHeston(Para& para, long numPath);
+double random01Uniform();
 
 #endif

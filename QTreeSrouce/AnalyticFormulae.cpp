@@ -307,12 +307,109 @@ void gauleg(float x1, float x2, float x[], float w[], int n){
 }
 
 
-double EuroCall_Heston(Para para){
+double EuroCall_Heston(Para& para){
 
 	return para.StartPrice*P_j(1, para)-para.Strike*exp(-para.Interest*para.Maturity)*P_j(2, para);
 }
 
-double EuroPut_Heston(Para para){
+double EuroPut_Heston(Para& para){
 	double call = EuroCall_Heston(para);
 	return call - para.StartPrice + para.Strike*exp(-para.Interest*para.Maturity);
+}
+
+
+
+double random01Uniform(){
+	//generate a number bt 0~1
+	return rand() / double(RAND_MAX);
+}
+
+vector<double> PureMCHeston(Para& para, long numPath)
+{
+	double mean = 0.0, stderr1 = 0.0;
+	vector <double> results;
+	results.reserve(numPath);
+
+	double S0 = para.StartPrice; //,X0 = log(para.StartPrice);
+	double T = para.Maturity;
+	int steps = para.Steps;
+	int interSteps = 100;
+	double Delta_t = T / (steps*interSteps);
+	double sqrt_Delta_t = sqrt(Delta_t);
+
+	double V0 = para.Vol0;
+	double r = para.Interest;
+	double sigma_Y = para.VolOfVol;
+	double theta = para.Theta;
+	double kappa = para.Kappa;
+	double rho = para.Rho;
+
+
+	for (int i = 1; i <= numPath; i++) //path number = numPath
+	{
+		//within every path:
+
+		double S_temp = S0; 
+		double Y0 = log(S0) - rho / sigma_Y * V0;
+		double Y_temp = Y0;
+		double V_temp = V0;
+
+		// European options
+		double optPrice = 0.0;
+
+
+		for (int j = 1; j <= steps; j++)
+		{
+			//double S_old = S_temp;//exp(X_temp);
+
+			//mini-step evolution
+			for (int k = 1; k <= interSteps; k++)
+			{
+
+				//Box-Muller to generate two standard normal rv: e1 and e2
+				double U1 = random01Uniform();
+				double U2 = random01Uniform();
+				double R = sqrt((-2)*log(U1));
+				double angle = 2 * M_PI *U2;
+				double e1 = R*cos(angle);
+				double e2 = R*sin(angle);
+
+				Y_temp = Y_temp + (r - V_temp / 2 - rho / sigma_Y * kappa * (theta - V_temp)) * Delta_t + 
+						 sqrt(1 - rho*rho) * sqrt(V_temp) * e1 * sqrt_Delta_t;
+				V_temp = V_temp + kappa*(theta - V_temp) * Delta_t + sigma_Y * sqrt(V_temp) * e2 * sqrt_Delta_t +
+						 0.25 * sigma_Y * sigma_Y * (e2 * e2 * Delta_t - Delta_t);
+				
+			}
+
+		}
+		S_temp = exp(Y_temp + rho / sigma_Y * V_temp);
+
+		//optPrice = exp(-r * T) * max(S_temp - para.Strike,0);
+		optPrice = exp(-r * T) * max(para.Strike - S_temp, 0);
+
+
+		std::cout << i << ", " << optPrice << endl;
+		mean += optPrice;
+		results.push_back(optPrice);
+
+	}
+
+
+	mean = mean / numPath;
+
+	double variance = 0.0;
+	for (int i = 0; i < numPath; i++)
+	{
+		variance += (results[i] - mean) * (results[i] - mean);
+	}
+	variance = variance / numPath;
+	double stddev = sqrt(variance);
+	stderr1 = stddev / sqrt(numPath);
+
+	vector <double> statistics;
+	statistics.clear();
+	statistics.push_back(mean);
+	statistics.push_back(stderr1);
+
+	return statistics;
 }

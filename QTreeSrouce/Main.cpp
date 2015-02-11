@@ -53,17 +53,23 @@ int main()
 	//srand(glbSeed);
 	srand(timerSeed);
 
-	//BSTests(para1);			// BS Test 1
-	//BSTestsInterest(para1);	// BS Test 2
-	//BSTestsProb(para1);			// BS Test 3
+	//BSTests(para1);
+	//BSTestsInterest(para1);
+	//BSTestsProb(para1);
 	//BSTestsFull(para1);
 
-	HestonTestsOne(para1);
-	//HestonTestMC(para1, 10);
+	//HestonTestsOne(para1);
+	//HestonTestMC(para1, 100);
 	//HestonTestProb(para1, 100);
 	//HestonTestFull(para1, 100);
 	//HestonRhoAnalytical(para1);
 
+	vector<double> PureMCResults = PureMCHeston(para1, 10000);
+	cout << PureMCResults[0] << endl;
+	cout << PureMCResults[1] << endl << endl;
+
+	cout << EuroCall_Heston(para1) << endl;
+	cout << EuroPut_Heston(para1) << endl;
 	return 0;
 }
 

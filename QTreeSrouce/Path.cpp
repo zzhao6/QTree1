@@ -62,9 +62,6 @@ Path::Path(Para& outPara, int sigmaType)
 	// test drift and grid functions
 	this->genDriftsAndGrids();
 	///////////////////////////////////////////////////////////////
-
-	// seeds inside paths are obsolete
-	//srand(pathSeed);
 }
 
 /////////////////////////////////////////
@@ -72,46 +69,69 @@ void Path::genDriftsAndGrids()
 {
 	double dt = this->pathPara.Maturity / this->pathPara.Steps;
 
-	if (this->pathPara.Rho == 0)
-	{
-		// tree and vol are uncorrelated
-		pathPara.grid = paraVec[0].Sigma * sqrt(dt);
-		pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
+	// tree and vol are correlated
+	pathPara.grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[0].Sigma * sqrt(dt);
 
-		for (int i = 1; i < pathPara.Steps + 1; i++)
-		{
-			paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
-			paraVec[i].drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
-		}
-	}
-	else
-	{
-		// tree and vol are correlated
-		pathPara.grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[0].Sigma * sqrt(dt);
+	pathPara.drift =
+		(
+		pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2 -
+		pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[0].Sigma * paraVec[0].Sigma) / pathPara.VolOfVol
+		) * dt;
 
-		pathPara.drift =
+	//paraVec[0] = pathPara;		// not really useful
+
+	for (int i = 1; i < pathPara.Steps + 1; i++)
+	{
+		paraVec[i].grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[i-1].Sigma * sqrt(dt);
+		paraVec[i].drift =
 			(
-			pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2 -
-			pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[0].Sigma * paraVec[0].Sigma) / pathPara.VolOfVol
+			pathPara.Interest - paraVec[i-1].Sigma * paraVec[i-1].Sigma / 2 -
+			pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[i-1].Sigma * paraVec[i-1].Sigma) / pathPara.VolOfVol
 			) * dt;
-
-		for (int i = 1; i < pathPara.Steps + 1; i++)
-		{
-			paraVec[i].grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[i].Sigma * sqrt(dt);
-			paraVec[i].drift =
-				(
-				pathPara.Interest - paraVec[i].Sigma * paraVec[0].Sigma / 2 -
-				pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[i].Sigma * paraVec[i].Sigma) / pathPara.VolOfVol
-				) * dt;
-		}
 	}
 
+	//if (this->pathPara.Rho == 0)
+	//{
+	//	// tree and vol are uncorrelated
+	//	pathPara.grid = paraVec[0].Sigma * sqrt(dt);
+	//	pathPara.drift = (pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2) * dt;
+
+	//	for (int i = 1; i < pathPara.Steps + 1; i++)
+	//	{
+	//		paraVec[i].grid = paraVec[i].Sigma * sqrt(dt);
+	//		paraVec[i].drift = (pathPara.Interest - paraVec[i-1].Sigma * paraVec[i-1].Sigma / 2) * dt;
+
+	//		//printf("%dth drift is %f, %dth grid is %f\n", i, paraVec[i].drift, i, paraVec[i].grid);
+	//	}
+	//}
+	//else
+	//{
+	//	// tree and vol are correlated
+	//	pathPara.grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[0].Sigma * sqrt(dt);
+
+	//	pathPara.drift =
+	//		(
+	//		pathPara.Interest - paraVec[0].Sigma * paraVec[0].Sigma / 2 -
+	//		pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[0].Sigma * paraVec[0].Sigma) / pathPara.VolOfVol
+	//		) * dt;
+
+	//	for (int i = 1; i < pathPara.Steps + 1; i++)
+	//	{
+	//		paraVec[i].grid = sqrt(1 - pathPara.Rho * pathPara.Rho) * paraVec[i].Sigma * sqrt(dt);
+	//		paraVec[i].drift =
+	//			(
+	//			pathPara.Interest - paraVec[i].Sigma * paraVec[0].Sigma / 2 -
+	//			pathPara.Rho * pathPara.Kappa * (pathPara.Theta - paraVec[i].Sigma * paraVec[i].Sigma) / pathPara.VolOfVol
+	//			) * dt;
+	//	}
+	//}
 
 
-	for (int i = 0; i < pathPara.Steps; i++)
-	{
-		LOGGER->Log("%f\n%f\n", paraVec[i].drift, paraVec[i].grid);
-	}
+
+	//for (int i = 0; i < pathPara.Steps; i++)
+	//{
+	//	LOGGER->Log("%f\n%f\n", paraVec[i].drift, paraVec[i].grid);
+	//}
 }
 
 
